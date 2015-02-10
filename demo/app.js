@@ -1,10 +1,8 @@
 angular.module('sruDemo', ['ngSRU'])
 
-// should not be required anymore:
-.config( function ($httpProvider) {
-    $httpProvider.defaults.useXDomain = true;
-    delete $httpProvider.defaults.headers.common['X-Requested-With'];
-    // CORS requires IE >= 10
+// optional configuration of SRU version
+.config( function (SRUServiceProvider) {
+    SRUServiceProvider.version = '1.2';
 })
 
 .controller('sruDemoController', ['$scope','SRUService', 'ngSRU.version',
@@ -15,7 +13,7 @@ function ($scope, SRUService, version) {
     $scope.search = function() {
         $scope.error = null;
         SRUService.searchRetrieve( $scope.baseURL, {
-            cqlQuery: $scope.cqlQuery
+            cql: $scope.cqlQuery,
         } ).then(
             function (response) {
                 $scope.response = response;
@@ -25,4 +23,18 @@ function ($scope, SRUService, version) {
             }
         );
     };
+
+    $scope.explain = function() {
+        $scope.error = null;
+        SRUService.explain( $scope.baseURL )
+        .then(
+            function (response) {
+                $scope.response = response;
+            },
+            function (error) {
+                $scope.error = error;
+            }
+        );
+    };
+
 }]);
