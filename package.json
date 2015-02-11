@@ -1,0 +1,10 @@
+{
+  "name": "sru-client",
+  "main": [
+    "sru-client.js",
+    "sru-client..min.js"
+  ],
+  "dependencies": {
+    "angular": "^1.2.0"
+  }
+}
