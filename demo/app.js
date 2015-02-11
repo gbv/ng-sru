@@ -39,7 +39,7 @@ function ($scope, SRUService, version) {
                 $scope.availableSchemas[""] = "(default)";
             },
             function (error) {
-                $scope.error = error;
+                $scope.error = error.data;
             }
         );
     };

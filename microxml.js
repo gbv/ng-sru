@@ -30,6 +30,7 @@ function MicroXML() {
                 }
             } else if (child.nodeType == 3 || child.nodeType == 4) {
                 var text = child.nodeValue;
+                // TODO: don't trim mixed content elements
                 if (text != null && text.trim()!="") {
                     result.push(text);
                 }
