@@ -1,0 +1,27 @@
+{
+  "name": "ng-sru",
+  "version": "0.0.0",
+  "homepage": "https://github.com/gbv/ng-sru",
+  "authors": [
+    "Jakob Voss <voss@gbv.de>"
+  ],
+  "description": "AngularJS SRU client",
+  "main": [
+    "ng-sru.js",
+    "ng-sru.min.js"
+  ],
+  "keywords": [
+    "SRU",
+    "search",
+    "angular",
+    "angularjs"
+  ],
+  "license": "AGPL",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

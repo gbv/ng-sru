@@ -7,14 +7,21 @@
  *
  * Experimental SRU client as AngularJS module.
  *
- * SRU server must support the "Access-Control-Allow-Origin" response header!
+ * *SRU server must support the "Access-Control-Allow-Origin" response header!*
  *
- * Method `searchRetrieve( baseURL, query )` where `query` is an object with
- * keys `cqlQuery` (mandatory) and `version`, `startRecord`, `maximumRecord`
- * (all optional).
+ * Supported methods:
+ *
+ * * `searchRetrieve( baseURL, query )` where `query` is an object with
+ *   keys `cqlQuery` (mandatory) and `version`, `startRecord`, `maximumRecord`
+ *   (all optional)
+ * * `explain( baseURL )`
  */
 angular.module('ngSRU',[])
 .constant('ngSRU.version', '0.0.0');
+
+// <microxml>
+//
+// </microxml>
 
 // This JavaScript class could be refactored to be used with node.js as well
 // requires MicroXML!!
@@ -35,10 +42,11 @@ function SRUService(version, $http, $q) {
 
     this.simplifySearchRetrieveResponse = function(response) {
         var xml = (new MicroXML()).simplify(response,4);
+        var records = xml.records || [];
         var result = { 
             count: xml.numberOfRecords * 1,
             next: xml.nextRecordPosition,
-            records: xml.records.map(function(xmlRecord) { 
+            records: records.map(function(xmlRecord) { 
                 var record = xmlRecord.record[0];
                 var recordData = record.recordData[0];
                 var data; // assume that XML response has a root element
@@ -74,11 +82,11 @@ function SRUService(version, $http, $q) {
         var explain = xml;
         var schemaInfo = explain.schemaInfo;
         if (delete explain.schemaInfo) {
-            explain.schema = {};
+            explain.schemas = {};
             var schemas = schemaInfo[0].schema;
-            //explain.schema = schemas;
             for (var i=0; i<schemas.length; i++) {
-                explain.schema[schemas[i].name] = schemas[i].title; // TODO: multiple languages
+                // TODO: multiple languages
+                explain.schemas[schemas[i].name] = schemas[i].title;
             }
         }
         // TODO: transform indexInfo

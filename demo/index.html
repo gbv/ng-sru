@@ -6,7 +6,6 @@
   <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" />
   <link href="app.css" rel="stylesheet" />
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.22/angular.min.js"></script>
-  <script src="microxml.js"></script>
 </head>
 <body ng-controller="sruDemoController">
 <header>
@@ -23,7 +22,8 @@
                     <input type="text" class="form-control" ng-model="cqlQuery" placeholder="query (CQL)">
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control" ng-model="recordSchema" placeholder="schema">
+                    <select class="form-control" ng-model="recordSchema"
+                            ng-options="name as title for (name,title) in availableSchemas"></select>
                 </div>
                <button type="submit" class="btn btn-default">search</button>
                <button type="button" ng-click="explain()" class="btn btn-default">explain</button>
@@ -53,7 +53,8 @@
         </div>
    </nav>
 </footer>
-<script src="../src/ng-sru.js"></script>
+<script src="../microxml.js"></script>
+<script src="../ng-sru.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

@@ -2,8 +2,6 @@
  * XML to MicroXML parser created by Jakob Voß
  */
 function MicroXML() {
-	'use strict';
-		
 	function parseNode( node ) {
         if (node.nodeType != 1) return; // skip non-element nodes
 
@@ -42,8 +40,6 @@ function MicroXML() {
 	}
 	
     this.parse = function(xmlString, depth) {
-        var xml;
-
         if ( !xmlString || typeof xmlString !== "string" ) {
             return;
         }
@@ -51,28 +47,26 @@ function MicroXML() {
         try { // Support: IE9 (IE8 would transform tag names to uppercase anyway)
             var parser = new DOMParser();
             xml = parser.parseFromString( xmlString, "text/xml" );
+
+            // invalid XML
+            if (!xml || xml.getElementsByTagName("parsererror").length) {
+               return;
+            }
+
+            xml = parseNode(xml.firstElementChild);
+            if (depth) {
+                xml = this.simplify(xml,depth);
+            } 
+            return xml;
         } catch (e) {
             return;
         }
-
-        // invalid XML
-        if (!xml || xml.getElementsByTagName("parsererror").length) {
-            return;
-        }
-
-        xml = parseNode(xml.firstElementChild);
-        if (depth) {
-            xml = this.simplify(xml,depth);
-        } 
-
-        return xml;
 	};
 
     this.simplify = function(node, depth) {
         if (!depth) {
             return node;
-        }
-        if (node.length == 3 && typeof node[2] == 'string') {
+        } else if (node.length == 3 && typeof node[2] == 'string') {
             return node[2];
         }
         var xml = node[1]; // attributes
@@ -88,7 +82,7 @@ function MicroXML() {
                 }
             }
         }
-        // TODO: flatten arrays
+        // flatten arrays if only child element is a text node
         for (var key in xml) {
             if ( xml[key] instanceof Array && xml[key].length == 1 ) {
                 if (typeof xml[key][0] == 'string') {
@@ -98,5 +92,4 @@ function MicroXML() {
         }
         return xml;
     };
-
 }

@@ -1,8 +1,8 @@
 {
-  "name": "sru-client",
+  "name": "ng-sru",
   "main": [
-    "sru-client.js",
-    "sru-client..min.js"
+    "ng-sru.js",
+    "ng-sru.min.js"
   ],
   "dependencies": {
     "angular": "^1.2.0"

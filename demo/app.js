@@ -9,12 +9,14 @@ angular.module('sruDemo', ['ngSRU'])
 function ($scope, SRUService, version) {
     $scope.version = version;
     $scope.baseURL = "http://gsoapiwww.gbv.de/sru/gvk";
-    $scope.recordSchema  = "dc";
+    $scope.availableSchemas = { "": "(default)" };
+    $scope.recordSchema  = "";
+    $scope.cqlQuery = "pica.all=xxx";
 
     $scope.search = function() {
         $scope.error = null;
         SRUService.searchRetrieve( $scope.baseURL, {
-            cql: $scope.cqlQuery,
+            cql: $scope.cqlQuery || "",
             maximumRecords: 10,
             recordSchema: $scope.recordSchema,
         } ).then(
@@ -33,6 +35,8 @@ function ($scope, SRUService, version) {
         .then(
             function (response) {
                 $scope.response = response;
+                $scope.availableSchemas = angular.copy(response.data.schemas) || {};
+                $scope.availableSchemas[""] = "(default)";
             },
             function (error) {
                 $scope.error = error;
